@@ -22,10 +22,11 @@ def init():
     
     driver = Chrome(options=options, service=chrome_service) 
     driver.implicitly_wait(5)
+    
     print("Please input your directed post")
     URL = input()   
     print("Please input interval per scanning (in second): ")
-    interval = input()
+    interval = int(input())
     
 
     driver.get(URL) 
@@ -36,18 +37,25 @@ def init():
     
     while(True):
         try:
+            driver.get(URL) 
             content = driver.find_element(By.CSS_SELECTOR,"div[class='_aacl _aaco _aacw _aacx _aada _aade']>span")
-            print(content.text)
+            
             curTime = str(time.localtime().tm_hour)+str(time.localtime().tm_min)+str(time.localtime().tm_sec)
-            tempLikeStorage=[int(content.text),str(curTime)]
-            likeCnt.append(tempLikeStorage)
+            
+            like = int(content.text.replace(',', ''))
+            
+            print(like)
+            
+            
+            likeCnt.append(like)
+            # likeCnt.append(like)
+            
             df = pd.DataFrame(likeCnt)
             writer = pd.ExcelWriter(fileName, engine='xlsxwriter')
             df.to_excel(writer, sheet_name='welcome', index=False)
             writer.save()
             
             time.sleep(interval)
-            driver.get(URL) 
         except:
             print("refresh")
             driver.refresh()
