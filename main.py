@@ -10,13 +10,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 URL  = ""
 likeCnt = []
 def init():
-    # start by defining the options 
     options = webdriver.ChromeOptions() 
-    options.headless = True # it's more scalable to work in headless mode 
-    # normally, selenium waits for all resources to download 
-    # we don't need it as the page also populated with the running javascript code. 
+    options.headless = True 
     options.page_load_strategy = 'none' 
-    # this returns the path web driver downloaded 
     chrome_path = ChromeDriverManager().install() 
     chrome_service = Service(chrome_path) 
     
